@@ -13,6 +13,7 @@ class CosmoWebRow < ActiveRecord::Base
                offer_num cat_grp_num acc_1 acc_2 acc_3 acc_4 up_1 up_2 up_3 cat_main_id_1 cat_main_name_1 cat_sub_id_1
                cat_sub_name_1 cat_main_id_2 cat_main_name_2 cat_sub_id_2 cat_sub_name_2 cat_main_id_3 cat_main_name_3
                cat_sub_id_3 cat_sub_name_3}
+
     end
   end
 end

@@ -58,7 +58,6 @@ ActiveRecord::Schema.define(version: 20151007195233) do
     t.datetime "updated_at",               null: false
   end
 
-
   create_table "cosmo_web_rows", force: :cascade do |t|
     t.integer  "form_id"
     t.integer  "prod_int_num"
@@ -66,7 +65,7 @@ ActiveRecord::Schema.define(version: 20151007195233) do
     t.string   "web_desc"
     t.string   "model_num"
     t.string   "manufacturer"
-    t.integer  "upc", limit: 6
+    t.integer  "upc",              limit: 6
     t.string   "part_num"
     t.string   "prod_type"
     t.string   "prod_terms"
@@ -131,12 +130,12 @@ ActiveRecord::Schema.define(version: 20151007195233) do
     t.string   "cat_main_name_3"
     t.string   "cat_sub_id_3"
     t.string   "cat_sub_name_3"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "forms", force: :cascade do |t|
-    t.string :csv_type
+    t.string   "csv_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

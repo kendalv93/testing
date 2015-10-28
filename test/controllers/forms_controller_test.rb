@@ -3,6 +3,28 @@ require 'test_helper'
 class FormsControllerTest < ActionController::TestCase
   setup do
     @form = forms(:one)
+    @update = {
+        
+        
+
+
+    prod_int_num: 0,
+    prod_num: 'M1111',
+    model_num: 'c-123',
+    manufacturer: 'Something Brand INC.',
+    upc: 123456789000,
+    part_num: 'c-123',
+    prod_type: 'Something',
+    prod_terms: 'Something something something',
+    dropship: 0,
+    hype: 1,
+    comp_price: 'msr',
+    was_price_line: 999.99,
+    price_add_on: 999.99,
+    web_rest: 99.9,
+
+    }
+    
   end
 
   test "should get index" do
