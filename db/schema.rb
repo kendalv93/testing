@@ -11,7 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151007195233) do
+ActiveRecord::Schema.define(version: 20151110075745) do
+
+  create_table "checking_for_errors", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "cosmo_sigma_rows", force: :cascade do |t|
     t.integer  "form_id"

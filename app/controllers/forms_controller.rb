@@ -19,11 +19,6 @@ class FormsController < ApplicationController
       when 'cosmo_sigma'
         CosmoSigmaRow.import(params[:file], form.id)
       when 'cosmo_web'
-
-
-
-
-
         CosmoWebRow.import(params[:file], form.id)
 
 

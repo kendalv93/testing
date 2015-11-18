@@ -1,8 +1,11 @@
 class CosmoWebRow < ActiveRecord::Base
+  validate :prod_int_not_empty
+
   belongs_to :form
   include Import::InstanceMethods
   class << self #load as class methods
     include Import::ClassMethods
+
 
     def headers
               %w{prod_int_num prod_num web_desc model_num manufacturer upc part_num prod_type prod_terms headline lead_in
@@ -16,4 +19,9 @@ class CosmoWebRow < ActiveRecord::Base
 
     end
   end
+
+
+
+
+
 end
