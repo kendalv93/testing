@@ -1,4 +1,7 @@
 class CheckingForErrorsController < ApplicationController
+  has_many :cosmo_sigma_rows
+  has_many :cosmo_web_rows
+
 
   #a real number or decimal
   def is_number?
@@ -7,10 +10,52 @@ class CheckingForErrorsController < ApplicationController
 
   def number?
     if headers.is_number?
-
+#leaving blank so if true do nothing
       else
     end
   end
+
+  def has_dollar
+    self.include? '$'
+  end
+
+  def has_0
+    self.include? '0'
+  end
+
+  def has_dollar_and_0
+    if has_dollar || has_0
+#leaving blank so if true do nothing
+    else
+      "Error: Dollar sign or 0 has been found"
+    end
+  end
+
+  def two_decimals
+    self.round(2)
+  end
+
+  def not_empty_no_dollar
+    if  self.to_s == ''
+#leaving blank so if true do nothing
+    else
+      if self.has_dollar_and_0
+        two_decimals
+      else
+        "Error: Dollar sign or 0 has been found"
+      end
+
+    end
+  end
+
+
+  def has_dollarsign
+    if has_dollar?
+      'Error: A "$" has been found, "$" cannot be used.'
+    end
+  end
+
+
 
 
   class A
@@ -43,6 +88,12 @@ class CheckingForErrorsController < ApplicationController
     #  }
     #end
 
+
+class HEADERS
+  
+end
+
+
     def headers
       [:prod_weight, :pack_weight, :box_length, :box_width, :box_height, :hla_cost,
        :hla_retail, :msrp, :compare_price, :wholesale_price, :map, :ca_prop_65, :overwight_shipcharge,:errorState]
@@ -68,17 +119,17 @@ class CheckingForErrorsController < ApplicationController
     when 14
       then is_number?
     when 15
-      then
+      then has_dollar_and_0
     when 16
-      then
+      then has_dollar_and_0
     when 17
-      then
+      then has_dollar_and_0
     when 18
-      then
+      then not_empty_no_dollar
     when 19
-      then
+      then not_empty_no_dollar
     when 20
-      then
+      then has_dollar_and_0
     when 21
       then
     when 22
