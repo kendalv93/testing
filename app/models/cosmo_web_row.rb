@@ -1,6 +1,4 @@
 class CosmoWebRow < ActiveRecord::Base
-  validate :prod_int_not_empty
-
   belongs_to :form
   include Import::InstanceMethods
   class << self #load as class methods

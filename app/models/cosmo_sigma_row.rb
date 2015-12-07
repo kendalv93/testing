@@ -1,9 +1,6 @@
 class CosmoSigmaRow < ActiveRecord::Base
   belongs_to :form
   include Import::InstanceMethods
-
-
-
   class << self #load as class methods
     include Import::ClassMethods
     def headers

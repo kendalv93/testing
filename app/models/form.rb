@@ -2,7 +2,6 @@ class Form < ActiveRecord::Base
   has_many :cosmo_sigma_rows
   has_many :cosmo_web_rows
 
-
   def rows
     case csv_type
       when 'cosmo_sigma'
