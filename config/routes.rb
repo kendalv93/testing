@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     collection { post :import }
   end
 
-  root to: "forms#index"
+  root to: "forms_import#new"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
