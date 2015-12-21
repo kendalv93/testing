@@ -1,0 +1,14 @@
+<h3>Import a CSV File</h3>
+<% @forms_import.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+<% end %>
+<%= form_tag '/forms_import', multipart: true do %>
+    <%= file_field_tag :file, accept: '.csv' %>
+    cosmo_sigma:
+    <%= radio_button_tag :row, :cosmo_sigma %>
+    cosmo_web:
+    <%= radio_button_tag :row, :cosmo_web %>
+    <%= submit_tag "Import CSV" %>
+<% end %>
+
+<br>
