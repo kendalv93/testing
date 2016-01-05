@@ -42,7 +42,7 @@ class FormsImport
     else
       @forms.each_with_index do |product, index|
         product.errors.full_messages.each do |message|
-          errors.add :base, "Row #{index+2}: #{message}"
+          errors.add :base, "In Row #{index+1}: #{message}"
         end
       end
       false
@@ -50,7 +50,6 @@ class FormsImport
   end
 
   def new
-
 
     redirect_to root_url, notice: "Products imported."
   end

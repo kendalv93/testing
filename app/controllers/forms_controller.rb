@@ -13,20 +13,6 @@ class FormsController < ApplicationController
   def show
   end
 
-  def import
-    form = Form.new(csv_type: params[:row])
-    form.save
-    case params[:row]
-      when 'cosmo_sigma'
-        CosmoSigmaRow.import(params[:file], form.id)
-      when 'cosmo_web'
-        CosmoWebRow.import(params[:file], form.id)
-
-
-    end
-    redirect_to root_url, notice: "Products imported."
-  end
-
   # GET /forms/new
   def new
     @form = Form.new
