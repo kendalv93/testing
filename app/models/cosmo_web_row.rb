@@ -17,25 +17,23 @@ class CosmoWebRow < ActiveRecord::Base
 
 
   def has_errors
-    #PROD_INT_NUM  - must be 0
-    errors.add(:must_be_zero, "prod_int_num must be 0") unless must_be_zero(prod_int_num)
-    #PROD_NUM  -  must have a value and start with M
-    #WEB_DESC  -  must have a value
+    #PROD_INT_NUM  -      must be 0
+    #PROD_NUM  -          must have a value and start with M
+    #WEB_DESC  -          must have a value
     #MODEL_NUM  -
-    #MANUFACTURER  -  must have a value
-    #UPC  -  must have a value
+    #MANUFACTURER  -      must have a value
+    #UPC  -               must have a value
     #PART_NUM
     #PROD_TYPE
     #PROD_TERMS
-    #HEADLINE  -  must have a value
-    #LEAD_IN  -  must have a value
-    #COPY -  must have a value
+    #HEADLINE  -          must have a value
+    #LEAD_IN  -           must have a value
+    #COPY -               must have a value
     #FEATURES_1
     #FEATURES_2
     #NOTES
-    #FACTORY_SERVICED - Must be 0 or 1
-    #errors.add(:must_be_zero, "prod_int_num must be 0") unless zero_or_one(factory_serviced)
-    #DROPSHIP  - Must be 1
+    #FACTORY_SERVICED -   Must be 0 or 1
+    #DROPSHIP  -          Must be 1
     #HYPE
     #UPGRADE_TEXT
     #COMP_LINE          - Must have value
@@ -55,7 +53,7 @@ class CosmoWebRow < ActiveRecord::Base
     #ORIG_UPC           - Must be 0
     #ORIG_MODEL_NUM     - Must be 0
     #ORIG_PART_NUM      - Must be 0
-    #CA_LCD_LED            - Must be 0
+    #CA_LCD_LED         - Must be 0
     #ADD_COLUMN1
     #ADD_COLUMN2
     #ADD_COLUMN3
@@ -89,6 +87,13 @@ class CosmoWebRow < ActiveRecord::Base
     #CAT_MAIN_NAME_3    - If a value exists, it must be the corresponding category name
     #CAT_SUB_ID_3       - If a value exists, it must be a valid category ID
     #CAT_SUB_NAME_3     - If a value exists, it must be the corresponding category name
+
+    must_be_one = [dropship, avail]
+    #errors.add(:must_have_one, "value is not 1") if !have_one(must_be_one)
+    must_be_zero = [prod_int_num, was_price, orig_upc, orig_model_num, orig_part_num, ca_lcd_led]
+    #errors.add(:must_be_zero, "#{must_be_zero} is not 0") if !have_0(must_be_zero)
+    must_have_value = [web_desc, manufacturer, upc, headline, lead_in, copy, comp_line]
+    must_have_value(must_have_value)
   puts 'hello'
   end
 end

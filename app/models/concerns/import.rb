@@ -43,7 +43,11 @@ module Import
     end
 
     def have_0 x
-      x.map{|y| y == '0' }.any?
+      x.map{|y| y.is_a?(Numeric) && y == 0  }.any?
+    end
+
+    def have_one x
+      x.map{|y| y == '1'}.any?
     end
 
     def two_decimals x
@@ -52,7 +56,7 @@ module Import
 
     def zero_or_one x
       x == 0 || x == 1
-      self.errors.add(:blaa, "#{x} is not a zero or one")
+      #self.errors.add(:blaa, "#{x} is not a zero or one")
     end
 
     def illegal_character x
@@ -84,12 +88,20 @@ module Import
       %w{}
     end
 
-    def must_be_zero x
-      x == 0
+    def m_start_and_value x
+
     end
 
-    def must_be_one x
-      x == 1
+    def is_an_m m
+      m == "M"
+    end
+
+    def must_have_value x
+      i =0
+      x.map do |y|
+        i += 1
+        true if String self.send(y) rescue self.errors.add(:nan, " #{x[i]} does not have a value")
+      end.all?
     end
   end
 end
