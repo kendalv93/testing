@@ -89,11 +89,23 @@ class CosmoWebRow < ActiveRecord::Base
     #CAT_SUB_NAME_3     - If a value exists, it must be the corresponding category name
 
     must_be_one = [dropship, avail]
-    #errors.add(:must_have_one, "value is not 1") if !have_one(must_be_one)
-    must_be_zero = [prod_int_num, was_price, orig_upc, orig_model_num, orig_part_num, ca_lcd_led]
-    #errors.add(:must_be_zero, "#{must_be_zero} is not 0") if !have_0(must_be_zero)
-    must_have_value = [web_desc, manufacturer, upc, headline, lead_in, copy, comp_line]
-    must_have_value(must_have_value)
-  puts 'hello'
+    errors.add(:must_be_one_error_at, ":#{:dropship}") if dropship != "1"
+    errors.add(:must_be_one_error_at, ":#{:avail}") if avail != "1"
+    gotta_be_zero = [prod_int_num, orig_upc, orig_model_num, orig_part_num, ca_lcd_led]
+    #Must solve problem where letters are being compared to 0 as true
+    #errors.add(:must_be_zero_error_at, ":#{:prod_int_num} and (#{prod_int_num}) was found") if  prod_int_num != 0
+    errors.add(:must_be_zero, "#{}" ) unless must_be_zero(gotta_be_zero)
+    must_zero_or_one = [factory_serviced, prop_65]
+    errors.add(:must_be_a_zero_or_one, "#{must_zero_or_one}") if !one_or_zero(must_zero_or_one)
+    #must have value and start with M prod_num
+    errors.add(:must_have_value_and_start_with_M, "@ #{:prod_num}- #{prod_num}") unless must_have_M_and_value(prod_num)
+
+    #must have decimal value and no $ sign
+    no_dollar_not_decimal = [comp_price, adv_price, before_red_ship]
+    errors.add(:dollar_sign_or_not_decimal, "#{}") if are_numbers?(no_dollar_not_decimal) && have_dollar?(no_dollar_not_decimal)
+
+    needs_something_inside = [web_desc, manufacturer, upc, headline, lead_in, copy, comp_line]
+    errors.add(:no_value_error_at, ":#{}") unless !must_have_value(needs_something_inside)
+  #puts 'hello'
   end
 end

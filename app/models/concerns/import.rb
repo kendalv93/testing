@@ -42,10 +42,6 @@ module Import
       x.map{|y| y.include?('$') unless y.nil?}.any?
     end
 
-    def have_0 x
-      x.map{|y| y.is_a?(Numeric) && y == 0  }.any?
-    end
-
     def have_one x
       x.map{|y| y == '1'}.any?
     end
@@ -54,9 +50,13 @@ module Import
       x.round(2)
     end
 
-    def zero_or_one x
-      x == 0 || x == 1
-      #self.errors.add(:blaa, "#{x} is not a zero or one")
+    #def zero_or_one x
+    #  x == 0 || x == 1
+    #end
+
+    def one_or_zero x  #looking for strings equaled to 0 and 1 and not integers
+      #puts x.map{|y| "#{y} #{y.to_s === "1" || y.to_s === "0"} "}
+      x.map{|y| y === "0" || y === "1"}.all?
     end
 
     def illegal_character x
@@ -92,16 +92,17 @@ module Import
 
     end
 
-    def is_an_m m
-      m == "M"
+    def must_have_value x
+      x.map{|y| y.nil?}.any?
     end
 
-    def must_have_value x
-      i =0
-      x.map do |y|
-        i += 1
-        true if String self.send(y) rescue self.errors.add(:nan, " #{x[i]} does not have a value")
-      end.all?
+    def must_have_M_and_value x
+      x != nil && x[0] == 'M'
+    end
+
+    def must_be_zero x
+      puts x.map{|y| "#{y} #{y.to_s === '0'}"}
+      x.map{|y| y.to_s === '0'}.all?
     end
   end
 end

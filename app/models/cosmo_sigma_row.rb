@@ -22,6 +22,7 @@ class CosmoSigmaRow < ActiveRecord::Base
                order_retrieval_email, drop_ship_zip, drop_ship_fee, terms, ca_prop_65, overweight]
     errors.add(:char_error, "barf ") unless !illegal_character(headers)
     errors.add(:nan_errors, "not a number") unless are_numbers? [:product_weight, :package_weight, :box_length, :box_width, :box_height]
+    #errors.add(:not_a_number_error, "#{:product_weight} (#{product_weight})") unless product_weight.is_a?(Float)
     errors.add(:dollar_error, "contains dollar signs") unless !have_dollar? [compare_price, wholesale_price,]
     dollar_or_zero = [hla_cost, hla_retail, msrp, map,]
     errors.add(:dollar_or_zero_error, "contains dollar or zero") unless !have_dollar?(dollar_or_zero ) && !have_0(dollar_or_zero)
