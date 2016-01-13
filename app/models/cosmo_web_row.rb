@@ -92,8 +92,6 @@ class CosmoWebRow < ActiveRecord::Base
     errors.add(:must_be_one_error_at, ":#{:dropship}") if dropship != "1"
     errors.add(:must_be_one_error_at, ":#{:avail}") if avail != "1"
     gotta_be_zero = [prod_int_num, orig_upc, orig_model_num, orig_part_num, ca_lcd_led]
-    #Must solve problem where letters are being compared to 0 as true
-    #errors.add(:must_be_zero_error_at, ":#{:prod_int_num} and (#{prod_int_num}) was found") if  prod_int_num != 0
     errors.add(:must_be_zero, "#{}" ) unless must_be_zero(gotta_be_zero)
     must_zero_or_one = [factory_serviced, prop_65]
     errors.add(:must_be_a_zero_or_one, "#{must_zero_or_one}") if !one_or_zero(must_zero_or_one)
@@ -102,10 +100,20 @@ class CosmoWebRow < ActiveRecord::Base
 
     #must have decimal value and no $ sign
     no_dollar_not_decimal = [comp_price, adv_price, before_red_ship]
-    errors.add(:dollar_sign_or_not_decimal, "#{}") if are_numbers?(no_dollar_not_decimal) && have_dollar?(no_dollar_not_decimal)
+    errors.add(:dollar_sign_or_not_decimal, "#{no_dollar_not_decimal}") if have_dollar?(no_dollar_not_decimal) ||
+        is_empty?(no_dollar_not_decimal) || includes_letters?(no_dollar_not_decimal)
+
+
+    main_ids = [cat_main_id_1, cat_main_id_2, cat_main_id_3]
+    errors.add(:main_id_must_be_valid, "#{:main_ids} - #{main_ids}") unless valid_mains(main_ids)
+
+    main_category_names = [cat_main_name_1, cat_main_name_2, cat_main_name_3]
+    errors.add(:main_name_must_be_valid, "#{:main_category_names} - #{main_category_names}") unless valid_names(main_category_names)
+   # errors.add(:main_name_error, "#{cat_main_name_1}") unless cat_main_name_1.include?(the_legal_names)
 
     needs_something_inside = [web_desc, manufacturer, upc, headline, lead_in, copy, comp_line]
     errors.add(:no_value_error_at, ":#{}") unless !must_have_value(needs_something_inside)
+
   #puts 'hello'
   end
 end

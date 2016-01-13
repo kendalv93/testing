@@ -38,8 +38,20 @@ module Import
       end.all?
     end
 
+    def includes_letters? x
+      x.map{|y| y.include?('a'||'b'||'c'||'d'||'e'||'f'||'g'||'h'||'i'||'j'||'k'||'l'||'m'||'n'||'o'||'p'||'q'||'r'||'s'||'t'||'u'||'v'||'w'||'x'||'y'||'z') unless y.nil?}.any?
+    end
+
+    def is_empty? x
+      x.map{|y| y.nil?}.any?
+    end
+
     def have_dollar? x
       x.map{|y| y.include?('$') unless y.nil?}.any?
+    end
+
+    def have_0 x
+      x.map{|y| y == '0'}.any?
     end
 
     def have_one x
@@ -48,6 +60,10 @@ module Import
 
     def two_decimals x
       x.round(2)
+    end
+
+    def two_numbers_follow x
+      x.map{|y| /((?=:).+)/ unless y.nil?}.any?
     end
 
     #def zero_or_one x
@@ -75,21 +91,31 @@ module Import
       %w{; !  " backslash forwardslash}
     end
 
-    def illegal_numbers x
-      x.map{|y| illegal_num(y) unless y.nil?}.any?
+    def valid_mains x
+      x.map{|y| legal_main_ids(y) unless y.nil?}.any?
     end
 
-    def illegal_num num
-      is_illegal = the_illegal_numbers.map{|z| num.is_a?(INTEGER) ? num.include?(z) : true}.any?
-      is_illegal
+    def legal_main_ids x
+      legal_mains = the_legal_mains.map{|y| x.eql?(y) unless y.nil?}.any?
+      legal_mains
     end
 
-    def the_illegal_numbers
-      %w{}
+    def the_legal_mains
+      %w{1000 2000 3000 4000 5000 6000 7000 8000 9000}
     end
 
-    def m_start_and_value x
+    def valid_names x
+      x.map{|y| legal_main_names(y) unless y.nil?}.any?
+    end
 
+    def legal_main_names x
+      legal_mains = the_legal_names.map{|y| x.eql?(y) unless y.nil?}.any?
+      legal_mains
+    end
+
+    def the_legal_names
+      legal_names = ['Electronics', 'Cameras & Optics', 'Fashion', 'Household', 'Computers & Office', 'Auto & Hardware', 'Recreation & Health', 'Gifts & Collectibles', 'Footwear']
+      legal_names
     end
 
     def must_have_value x
