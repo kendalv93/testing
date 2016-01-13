@@ -111,6 +111,7 @@ module Import
     def legal_main_names x
       legal_mains = the_legal_names.map{|y| x.eql?(y) unless y.nil?}.any?
       legal_mains
+
     end
 
     def the_legal_names

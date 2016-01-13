@@ -104,12 +104,26 @@ class CosmoWebRow < ActiveRecord::Base
         is_empty?(no_dollar_not_decimal) || includes_letters?(no_dollar_not_decimal)
 
 
-    main_ids = [cat_main_id_1, cat_main_id_2, cat_main_id_3]
-    errors.add(:main_id_must_be_valid, "#{:main_ids} - #{main_ids}") unless valid_mains(main_ids)
+    main_ids = [cat_main_id_1]#, cat_main_id_2, cat_main_id_3]
+    #errors.add(:main_id_must_be_valid, "#{:main_ids} - #{main_ids}") unless valid_mains(main_ids)
 
-    main_category_names = [cat_main_name_1, cat_main_name_2, cat_main_name_3]
-    errors.add(:main_name_must_be_valid, "#{:main_category_names} - #{main_category_names}") unless valid_names(main_category_names)
-   # errors.add(:main_name_error, "#{cat_main_name_1}") unless cat_main_name_1.include?(the_legal_names)
+    if  cat_main_id_1 == '1000' && cat_main_name_1 === 'Electronics' ||
+        cat_main_id_1 == '2000' && cat_main_name_1 === 'Cameras & Optics' ||
+        cat_main_id_1 == '3000' && cat_main_name_1 === 'Fashion' ||
+        cat_main_id_1 == '4000' && cat_main_name_1 === 'Household' ||
+        cat_main_id_1 == '5000' && cat_main_name_1 === 'Computers & Office' ||
+        cat_main_id_1 == '6000' && cat_main_name_1 === 'Auto & Hardware' ||
+        cat_main_id_1 == '7000' && cat_main_name_1 === 'Recreation & Health' ||
+        cat_main_id_1 == '8000' && cat_main_name_1 === 'Gifts & Collectibles' ||
+        cat_main_id_1 == '9000' && cat_main_name_1 === 'Footwear'
+      errors.add(:main_id_must_be_valid, "#{:main_ids} - #{main_ids}") unless valid_mains(main_ids)
+    else
+      errors.add(:invalid_name_and_identifier, ":I found the id [#{cat_main_id_1}] with the category name [#{cat_main_name_1}]")
+    end
+
+    #main_category_names = [cat_main_name_1, cat_main_name_2, cat_main_name_3]
+    #errors.add(:main_name_must_be_valid, "#{:main_category_names} - #{main_category_names}") unless valid_names(main_category_names)
+    #errors.add(:main_name_error, "#{cat_main_name_1}") unless cat_main_name_1.include?(the_legal_names)
 
     needs_something_inside = [web_desc, manufacturer, upc, headline, lead_in, copy, comp_line]
     errors.add(:no_value_error_at, ":#{}") unless !must_have_value(needs_something_inside)
