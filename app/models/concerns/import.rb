@@ -6,7 +6,6 @@ module Import
 
     def import(file, form_id)
       CSV.foreach(file.path, headers: headers) do |row|
-        puts row.inspect
         product_hash = row.to_hash
         product = find_or_initialize_by(id: product_hash['id'], form_id: form_id)
         product.update(product_hash)
