@@ -135,82 +135,13 @@ class CosmoWebRow < ActiveRecord::Base
   end
 
   def has_errors
-    #PROD_INT_NUM  -      must be 0
-    #PROD_NUM  -          must have a value and start with M
-    #WEB_DESC  -          must have a value
-    #MODEL_NUM  -
-    #MANUFACTURER  -      must have a value
-    #UPC  -               must have a value
-    #PART_NUM
-    #PROD_TYPE
-    #PROD_TERMS
-    #HEADLINE  -          must have a value
-    #LEAD_IN  -           must have a value
-    #COPY -               must have a value
-    #FEATURES_1
-    #FEATURES_2
-    #NOTES
-    #FACTORY_SERVICED -   Must be 0 or 1
-    #DROPSHIP  -          Must be 1
-    #HYPE
-    #UPGRADE_TEXT
-    #COMP_LINE          - Must have value
-    #COMP_PRICE         - Must have decimal value, can't have '$'
-    #WAS_PRICE_LINE
-    #WAS_PRICE          - Must be 0
-    #ADV_PRICE_LINE
-    #ADV_PRICE          - Must have decimal value, can't have '$'
-    #PRICE_ADD_ON
-    #SOLD_IN_PAIRS
-    #WARR
-    #MFR_REB
-    #VC_REB
-    #BEFORE_RED_SHIP    - Must have decimal value, can't have '$'
-    #WEB_REST
-    #PROP_65            - Must be 0 or 1
-    #ORIG_UPC           - Must be 0
-    #ORIG_MODEL_NUM     - Must be 0
-    #ORIG_PART_NUM      - Must be 0
-    #CA_LCD_LED         - Must be 0
-    #ADD_COLUMN1
-    #ADD_COLUMN2
-    #ADD_COLUMN3
-    #ADD_COLUMN4
-    #ADD_COLUMN5
-    #AVAIL              - Must be 1
-    #ALT_IMAGES
-    #ENT_DT
-    #CONDITION
-    #VAR_OPT
-    #VAR_VAL
-    #VAR_NUM
-    #OFFER_NUM
-    #CAT_GRP_NUM
-    #ACC_1
-    #ACC_2
-    #ACC_3
-    #ACC_4
-    #UP_1
-    #UP_2
-    #UP_3
-    #CAT_MAIN_ID_1      - Must have a valid category ID
-    #CAT_MAIN_NAME_1    - Must have corresponding category name
-    #CAT_SUB_ID_1       - Must have a valid category ID
-    #CAT_SUB_NAME_1     - Must have corresponding category name
-    #CAT_MAIN_ID_2      - If a value exists, it must be a valid category ID
-    #CAT_MAIN_NAME_2    - If a value exists, it must be the corresponding category name
-    #CAT_SUB_ID_2       - If a value exists, it must be a valid category ID
-    #CAT_SUB_NAME_2     - If a value exists, it must be the corresponding category name
-    #CAT_MAIN_ID_3      - If a value exists, it must be a valid category ID
-    #CAT_MAIN_NAME_3    - If a value exists, it must be the corresponding category name
-    #CAT_SUB_ID_3       - If a value exists, it must be a valid category ID
-    #CAT_SUB_NAME_3     - If a value exists, it must be the corresponding category name
+
 
     must_be_one = [dropship, avail]
     errors.add(:must_be_one_error_at, ":#{:dropship}") if dropship != "1"
     errors.add(:must_be_one_error_at, ":#{:avail}") if avail != "1"
     gotta_be_zero = [prod_int_num, orig_upc, orig_model_num, orig_part_num, ca_lcd_led]
-    errors.add(:must_be_zero, "#{}") unless must_be_zero(gotta_be_zero)
+    errors.add(:must_be_zero, "#{gotta_be_zero}") unless must_be_zero(gotta_be_zero)
     must_zero_or_one = [factory_serviced, prop_65]
     errors.add(:must_be_a_zero_or_one, "#{must_zero_or_one}") if !one_or_zero(must_zero_or_one)
     errors.add(:must_have_value_and_start_with_M, "@ #{:prod_num}- #{prod_num}") unless must_have_M_and_value(prod_num)
@@ -225,7 +156,7 @@ class CosmoWebRow < ActiveRecord::Base
       errors.add(:invalid_name_and_identifier, ":I found the main id [#{cat_main_id_1}] with the category name [#{cat_main_name_1}]")
     end
 
-    if cat_main_id_2  != ''  && !cat_main_id_2.nil?
+    if (cat_main_id_2  != ''  && !cat_main_id_2.nil?) || (cat_main_name_2  != ''  && !cat_main_name_2.nil?)
       unless valid_main_id_name_combo?(cat_main_id_2, cat_main_name_2)
         errors.add(:invalid_name_and_identifier, ":I found the main id 2 [#{cat_main_id_2}] with the category name [#{cat_main_name_2}]")
       end
@@ -243,19 +174,19 @@ class CosmoWebRow < ActiveRecord::Base
     end
 
     sub_cat_2_3 = [cat_sub_id_2, cat_sub_id_3]
-    if cat_sub_id_2 != '' && !cat_sub_id_2.nil?
+    if (cat_sub_id_2 != ''  && !cat_sub_id_2.nil?) || (cat_sub_name_2 != ''  && !cat_sub_name_2.nil?)
       unless valid_id_name_combo?(cat_sub_id_2, cat_sub_name_2)
         errors.add(:sub_category_error, ":I found the id 2 [#{cat_sub_id_2}] with the category name [#{cat_sub_name_2}]")
       end
     end
 
-    if cat_sub_id_3 != ''  && !cat_sub_id_3.nil?
+    if (cat_sub_id_3 != ''  && !cat_sub_id_3.nil?) || (cat_sub_name_3 != ''  && !cat_sub_name_3.nil?)
       unless valid_id_name_combo?(cat_sub_id_3, cat_sub_name_3)
         errors.add(:sub_category_error, ":I found the id 3 [#{cat_sub_id_3}] with the category name [#{cat_sub_name_3}]")
       end
     end
 
     needs_something_inside = [web_desc, manufacturer, upc, headline, lead_in, copy, comp_line]
-    errors.add(:no_value_error_at, ":#{}") unless !must_have_value(needs_something_inside)
+    errors.add(:no_value_error_at, ":#{needs_something_inside}") unless !must_have_value(needs_something_inside)
   end
 end

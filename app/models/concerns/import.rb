@@ -33,7 +33,7 @@ module Import
       i =0
       x.map do |y|
         i += 1
-        true if Float self.send(y) rescue self.errors.add(:nan, " #{x[i]} is not a number")
+        true if Float self.send(y) rescue self.errors.add(:Invalid_number_found, " #{x[i]} is [#{self.send(y)}] and not a number")
       end.all?
     end
 
@@ -76,7 +76,6 @@ module Import
 
     def illegal_character x
       x.map{|y| illegal_char(y) unless y.nil?}.any?
-
     end
 
     def illegal_char char
@@ -84,10 +83,11 @@ module Import
       is_illegal
     end
 
+
     def the_illegal_characters
-      backslash = '/'
-      forwardslash = "\\"
-      %w{; !  " backslash forwardslash}
+      backslash = "/"
+      forward = "\\"
+      [';', '!', '"', forward]
     end
 
     def valid_mains x

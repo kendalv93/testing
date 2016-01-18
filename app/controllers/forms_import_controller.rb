@@ -1,6 +1,5 @@
 class FormsImportController< ApplicationController
 
-
   def new
   @forms_import = FormsImport.new(params[:file], params[:row])
   end
