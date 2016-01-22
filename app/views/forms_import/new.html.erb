@@ -1,10 +1,20 @@
- <h1 id="Title">Import a CSV File</h1>
-<% @forms_import.errors.full_messages.each do |msg| %>
-    <li id="errors"><%= msg %></li>
-<% end %>
+<div id="import_page"><h1 id="Title">Import a CSV File</h1>
+ <table id="list_of_errors">
+   <div id="errors_explained"><ul><h3>Errors explained</h3>
+     <h4><li>Illegal Characters are:   $   ;   \   '   "</li>
+       <li>(The easiest fix for illegal characters: ctrl+f and search for the illegal characters, replace or delete the illegal characters as appropriate)</li>
+       <li>Headers will be displayed inside double brackets [[HEADERS]]</li>
+       <li>Data inside cells will be displayed inside brackets [DATA]</li>
+       <li>[] - means that the cell is empty</li>
+       <li>In Row X : indicates which row the error was found in</li>
 
+     </h4></ul></div>
+ </table>
 
- <div><bgcolor>
+ <% @forms_import.errors.full_messages.each do |msg| %>
+     <li><div id="errors"><%= msg %></div></li>
+ <% end %>
+ <div>
 <%= form_tag '/forms_import', multipart: true do %>
     <%= file_field_tag :file, accept: '.csv' %>
     Sigma:
@@ -14,9 +24,6 @@
     <%= submit_tag "Import CSV" %>
 
 <% end %>
-   </bgcolor>
  </div>
-
-
-
+</div>
 <br>

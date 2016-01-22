@@ -33,20 +33,36 @@ module Import
       i =0
       x.map do |y|
         i += 1
-        true if Float self.send(y) rescue self.errors.add(:Invalid_number_found, " #{x[i]} is [#{self.send(y)}] and not a number")
+        true if Float self.send(y) rescue self.errors.add(:Invalid_number, " : [[#{x[i]}]] - [#{self.send(y)}]")
       end.all?
     end
 
-    def includes_letters? x
-      x.map{|y| y.include?('a'||'b'||'c'||'d'||'e'||'f'||'g'||'h'||'i'||'j'||'k'||'l'||'m'||'n'||'o'||'p'||'q'||'r'||'s'||'t'||'u'||'v'||'w'||'x'||'y'||'z') unless y.nil?}.any?
+    #def includes_letters? x
+    #  x.map{|y| y.include?('a'||'b'||'c'||'d'||'e'||'f'||'g'||'h'||'i'||'j'||'k'||'l'||'m'||'n'||'o'||'p'||'q'||'r'||'s'||'t'||'u'||'v'||'w'||'x'||'y'||'z') unless y.nil?}.any?
+    #end
+
+    def include_letters? x
+       x.include?('a'||'b'||'c'||'d'||'e'||'f'||'g'||'h'||'i'||'j'||'k'||'l'||'m'||'n'||'o'||'p'||'q'||'r'||'s'||'t'||'u'||'v'||'w'||'x'||'y'||'z') unless x.nil?
     end
+
+    #def is_empty? x
+    #  x.map{|y| y.nil?}.any?
+    #end
 
     def is_empty? x
-      x.map{|y| y.nil?}.any?
+      x.to_s=='' || x.nil?
     end
 
+    #def have_dollar? x
+    #  x.map{|y| y.include?('$') unless y.nil?}.any?
+    #end
+
     def have_dollar? x
-      x.map{|y| y.include?('$') unless y.nil?}.any?
+      x.to_s.include?('$')
+    end
+
+    def round_2 x
+
     end
 
     def have_0 x
@@ -69,9 +85,13 @@ module Import
     #  x == 0 || x == 1
     #end
 
-    def one_or_zero x  #looking for strings equaled to 0 and 1 and not integers
-      #puts x.map{|y| "#{y} #{y.to_s === "1" || y.to_s === "0"} "}
-      x.map{|y| y === "0" || y === "1"}.all?
+    #def one_or_zero x  #looking for strings equaled to 0 and 1 and not integers
+    #  #puts x.map{|y| "#{y} #{y.to_s === "1" || y.to_s === "0"} "}
+    #  x.map{|y| y === "0" || y === "1"}.all?
+    #end
+
+    def zero_or_one x
+      x.to_s==="0" || x.to_s==="1"
     end
 
     def illegal_character x
@@ -79,7 +99,11 @@ module Import
     end
 
     def illegal_char char
-      is_illegal = the_illegal_characters.map{|z| char.is_a?(String) ? char.include?(z) : true}.any?
+      cell = send(char)
+      is_illegal = the_illegal_characters.map{|z| cell.is_a?(String) && cell != '' ? cell.include?(z) : false}.any?
+      if is_illegal
+        self.errors.add(:illegal_character_found, " - [[#{char}]] - [#{cell}]")
+      end
       is_illegal
     end
 
@@ -87,48 +111,64 @@ module Import
     def the_illegal_characters
       backslash = "/"
       forward = "\\"
-      [';', '!', '"', forward]
+      [';', '!', '"', forward, '$', '\'']
     end
 
-    def valid_mains x
-      x.map{|y| legal_main_ids(y) unless y.nil?}.any?
-    end
-
-    def legal_main_ids x
-      legal_mains = the_legal_mains.map{|y| x.eql?(y) unless y.nil?}.any?
-      legal_mains
-    end
-
-    def the_legal_mains
-      %w{1000 2000 3000 4000 5000 6000 7000 8000 9000}
-    end
-
-    def valid_names x
-      x.map{|y| legal_main_names(y) unless y.nil?}.any?
-    end
-
-    def legal_main_names x
-      legal_mains = the_legal_names.map{|y| x.eql?(y) unless y.nil?}.any?
-      legal_mains
-
-    end
-
-    def the_legal_names
-      legal_names = ['Electronics', 'Cameras & Optics', 'Fashion', 'Household', 'Computers & Office', 'Auto & Hardware', 'Recreation & Health', 'Gifts & Collectibles', 'Footwear']
-      legal_names
-    end
+    #def must_have_value x
+    #  x.map{|y| y.nil?}.any?
+    #end
 
     def must_have_value x
-      x.map{|y| y.nil?}.any?
+      x.to_s!='' || x==''
     end
+
+
+    #def have_values? x
+    #  i =0
+    #  x.map do |y|
+    #    i += 1
+    #    val = send(y)
+    #    if val.nil? || val.empty?
+    #      errors.add(:No_value_found, ": #{y} is nil: #{val}")
+    #      false
+    #    else
+    #      true
+    #    end
+    #  end.all?
+    #end
+
+    #method is used for SigmaRow compare_price and wholesale_price are both headers inside SigmaRow ONLY
+    def values? x
+      i =0
+      x.map do |y|
+        i += 1
+        val = send(y)
+        if val.nil? || val==''
+          errors.add(:No_value_found, ": [[#{y}]] - [#{val}]") unless y=='compare_price' || y=='wholesale_price'
+          false
+        elsif y=='compare_price' || y=='wholesale_price'
+          errors.add(:Not_a_Number, ": [[#{y}]] -  [#{val}]") unless val.is_a?(Numeric) && val!=0
+          false
+        else
+          true
+        end
+      end.all?
+    end
+
 
     def must_have_M_and_value x
       x != nil && x[0] == 'M'
     end
 
+    #def must_be_zero x
+    #  i=0
+    # x.map{|y, i|i+1; y.to_s != '0' unless y.nil? } rescue self.errors.add(:bad, "#{x[i]}")
+    #end
+
     def must_be_zero x
-      puts x.map{|y| "#{y} #{y.to_s === '0'}"}
-      x.map{|y| y.to_s === '0'}.all?
+      x.to_s==="0"
     end
+
+
   end
 end

@@ -16,6 +16,21 @@
 
 
 #errors {
-    background: #fff600;
-    margin: 15px
+    background: #6d000e;
+    margin: 15px;
+    color: white;
+    display: inline-block;
+
+}
+
+#errors_explained {
+    background: #b9d1da;
+    border: 10px;
+    font-size: large;
+}
+
+#import_page {
+    background: #999999;
+    margin: 50px;
+
 }

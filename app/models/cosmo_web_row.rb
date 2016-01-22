@@ -135,58 +135,74 @@ class CosmoWebRow < ActiveRecord::Base
   end
 
   def has_errors
+    errors.add(:Not_a_one_error, ": Found [[#{:dropship}]] - [#{dropship}]") if dropship != "1"
+    errors.add(:Not_a_one_error, ": Found [[#{:avail}]] - [#{avail}]") if avail != "1"
+    #gotta_be_zero = [prod_int_num, orig_upc, orig_model_num, orig_part_num, ca_lcd_led]
+    errors.add(:must_be_zero_error, ": Found [[prod_int_num]] - [#{prod_int_num}]") unless must_be_zero(prod_int_num)
+    errors.add(:must_be_zero_error, ": Found [[orig_upc]] - [#{orig_upc}]") unless must_be_zero(orig_upc)
+    errors.add(:must_be_zero_error, ": Found [[orig_model_num]] - [#{orig_model_num}]") unless must_be_zero(orig_model_num)
+    errors.add(:must_be_zero_error, ": Found [[orig_part_num]] - [#{orig_part_num}]") unless must_be_zero(orig_part_num)
+    errors.add(:must_be_zero_error, ": Found [[ca_lcd_led]] - [#{ca_lcd_led}]") unless must_be_zero(ca_lcd_led)
 
-
-    must_be_one = [dropship, avail]
-    errors.add(:must_be_one_error_at, ":#{:dropship}") if dropship != "1"
-    errors.add(:must_be_one_error_at, ":#{:avail}") if avail != "1"
-    gotta_be_zero = [prod_int_num, orig_upc, orig_model_num, orig_part_num, ca_lcd_led]
-    errors.add(:must_be_zero, "#{gotta_be_zero}") unless must_be_zero(gotta_be_zero)
     must_zero_or_one = [factory_serviced, prop_65]
-    errors.add(:must_be_a_zero_or_one, "#{must_zero_or_one}") if !one_or_zero(must_zero_or_one)
-    errors.add(:must_have_value_and_start_with_M, "@ #{:prod_num}- #{prod_num}") unless must_have_M_and_value(prod_num)
+    #errors.add(:must_be_a_zero_or_one, "#{must_zero_or_one}") if !one_or_zero(must_zero_or_one)
+    errors.add(:must_be_a_zero_or_one_error, ": Found [[factory_serviced]] - [#{factory_serviced}]") unless zero_or_one(factory_serviced)
+    errors.add(:must_be_a_zero_or_one_error, ": Found [[prop_65]] - [#{prop_65}]") unless zero_or_one(prop_65)
 
-    no_dollar_not_decimal = [comp_price, adv_price, before_red_ship]
-    errors.add(:dollar_sign_or_not_decimal, "#{no_dollar_not_decimal}") if have_dollar?(no_dollar_not_decimal) ||
-        is_empty?(no_dollar_not_decimal) || includes_letters?(no_dollar_not_decimal)
+    errors.add(:must_have_value_and_start_with_M, ": Found [[#{:prod_num}]] - [#{prod_num}]") unless must_have_M_and_value(prod_num)
+
+    errors.add(:dollar_sign_or_not_decimal_error, ": Found [[#{:comp_price}]] - [#{comp_price}]") if have_dollar?(comp_price) ||
+        is_empty?(comp_price) || include_letters?(comp_price) || round_2(comp_price)
+    errors.add(:dollar_sign_or_not_decimal_error, ": Found [[#{:adv_price}]] - [#{adv_price}]") if have_dollar?(adv_price) ||
+        is_empty?(adv_price) || include_letters?(adv_price)
+    errors.add(:dollar_sign_or_not_decimal_error, ": Found [[#{:before_red_ship}]] - [#{before_red_ship}]") if have_dollar?(before_red_ship) ||
+        is_empty?(before_red_ship) || include_letters?(before_red_ship)
+
+
+
+    #needs_something_inside = [web_desc, manufacturer, upc, headline, lead_in, copy, comp_line]
+    errors.add(:No_input_error, ": Found [[web_desc]] - [#{web_desc}]") unless must_have_value(web_desc)
+    errors.add(:No_input_error, ": Found [[manufacturer]] - [#{manufacturer}]") unless must_have_value(manufacturer)
+    errors.add(:No_input_error, ": Found [[upc]] - [#{upc}]") unless must_have_value(upc)
+    errors.add(:No_input_error, ": Found [[headline]] - [#{headline}]") unless must_have_value(headline)
+    errors.add(:No_input_error, ": Found [[lead_in]] - [#{lead_in}]") unless must_have_value(lead_in)
+    errors.add(:No_input_error, ": Found [[copy]] - [#{copy}]") unless must_have_value(copy)
+    errors.add(:No_input_error, ": Found [[comp_line]] - [#{comp_line}]") unless must_have_value(comp_line)
 
 
     main_ids = [cat_main_id_1] #, cat_main_id_2, cat_main_id_3]
     unless valid_main_id_name_combo?(cat_main_id_1, cat_main_name_1)
-      errors.add(:invalid_name_and_identifier, ":I found the main id [#{cat_main_id_1}] with the category name [#{cat_main_name_1}]")
+      errors.add(:invalid_name_and_identifier, ": Found [[cat_main_id_1]] - [#{cat_main_id_1}] with the [[cat_main_name_1]] - [#{cat_main_name_1}]")
     end
 
     if (cat_main_id_2  != ''  && !cat_main_id_2.nil?) || (cat_main_name_2  != ''  && !cat_main_name_2.nil?)
       unless valid_main_id_name_combo?(cat_main_id_2, cat_main_name_2)
-        errors.add(:invalid_name_and_identifier, ":I found the main id 2 [#{cat_main_id_2}] with the category name [#{cat_main_name_2}]")
+        errors.add(:invalid_name_and_identifier, ": Found [[cat_main_id_2]] - [#{cat_main_id_2}] with the [[cat_main_name_2]] - [#{cat_main_name_2}]")
       end
     end
 
     if cat_main_id_3  != ''  && !cat_main_id_3.nil?
       unless valid_main_id_name_combo?(cat_main_id_3, cat_main_name_3)
-        errors.add(:invalid_name_and_identifier, ":I found the main id 3 [#{cat_main_id_3}] with the category name [#{cat_main_name_3}]")
+        errors.add(:invalid_name_and_identifier, ": Found [[cat_main_id_3]] - [#{cat_main_id_3}] with the [[cat_main_name_3]] - [#{cat_main_name_3}]")
       end
     end
 
     sub_ids = [cat_sub_id_1]
     unless valid_id_name_combo?(cat_sub_id_1, cat_sub_name_1)
-      errors.add(:sub_category_error, ":I found the id 1 [#{cat_sub_id_1}] with the category name [#{cat_sub_name_1}]")
+      errors.add(:sub_category_error, ":I found [[cat_sub_id_1]] - [#{cat_sub_id_1}] with the [[cat_sub_name_1]] [#{cat_sub_name_1}]")
     end
 
     sub_cat_2_3 = [cat_sub_id_2, cat_sub_id_3]
     if (cat_sub_id_2 != ''  && !cat_sub_id_2.nil?) || (cat_sub_name_2 != ''  && !cat_sub_name_2.nil?)
       unless valid_id_name_combo?(cat_sub_id_2, cat_sub_name_2)
-        errors.add(:sub_category_error, ":I found the id 2 [#{cat_sub_id_2}] with the category name [#{cat_sub_name_2}]")
+        errors.add(:sub_category_error, ":I found [[cat_sub_id_2]] - [#{cat_sub_id_2}] with the [[cat_sub_name_2]] [#{cat_sub_name_2}]")
       end
     end
 
     if (cat_sub_id_3 != ''  && !cat_sub_id_3.nil?) || (cat_sub_name_3 != ''  && !cat_sub_name_3.nil?)
       unless valid_id_name_combo?(cat_sub_id_3, cat_sub_name_3)
-        errors.add(:sub_category_error, ":I found the id 3 [#{cat_sub_id_3}] with the category name [#{cat_sub_name_3}]")
+        errors.add(:sub_category_error, ":I found [[cat_sub_id_3]] - [#{cat_sub_id_3}] with the [[cat_sub_name_3]] [#{cat_sub_name_3}]")
       end
     end
-
-    needs_something_inside = [web_desc, manufacturer, upc, headline, lead_in, copy, comp_line]
-    errors.add(:no_value_error_at, ":#{needs_something_inside}") unless !must_have_value(needs_something_inside)
   end
 end
