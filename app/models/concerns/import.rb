@@ -33,13 +33,9 @@ module Import
       i =0
       x.map do |y|
         i += 1
-        true if Float self.send(y) rescue self.errors.add(:Invalid_number, " : [[#{x[i]}]] - [#{self.send(y)}]")
+        true if Float self.send(y) rescue self.errors.add(:This_must_be_a_number, " : Found [[#{x[i]}]] - [#{self.send(y)}]")
       end.all?
     end
-
-    #def includes_letters? x
-    #  x.map{|y| y.include?('a'||'b'||'c'||'d'||'e'||'f'||'g'||'h'||'i'||'j'||'k'||'l'||'m'||'n'||'o'||'p'||'q'||'r'||'s'||'t'||'u'||'v'||'w'||'x'||'y'||'z') unless y.nil?}.any?
-    #end
 
     def include_letters? x
        x.include?('a'||'b'||'c'||'d'||'e'||'f'||'g'||'h'||'i'||'j'||'k'||'l'||'m'||'n'||'o'||'p'||'q'||'r'||'s'||'t'||'u'||'v'||'w'||'x'||'y'||'z') unless x.nil?
@@ -67,6 +63,14 @@ module Import
 
     def have_0 x
       x.map{|y| y == '0'}.any?
+    end
+
+    def contains_0? x
+      x == '0'
+    end
+
+    def contains_dollar? x
+      x.include?('?') unless x.nil?
     end
 
     def have_one x
@@ -102,7 +106,7 @@ module Import
       cell = send(char)
       is_illegal = the_illegal_characters.map{|z| cell.is_a?(String) && cell != '' ? cell.include?(z) : false}.any?
       if is_illegal
-        self.errors.add(:illegal_character_found, " - [[#{char}]] - [#{cell}]")
+        self.errors.add(:An_illegal_character_has_been_found_in, " : [[#{char}]] - [#{cell}]")
       end
       is_illegal
     end
@@ -144,16 +148,18 @@ module Import
         i += 1
         val = send(y)
         if val.nil? || val==''
-          errors.add(:No_value_found, ": [[#{y}]] - [#{val}]") unless y=='compare_price' || y=='wholesale_price'
+          errors.add(:You_need_a_value_at, ": Found [[#{y}]] - [#{val}]") unless y=='compare_price' || y=='wholesale_price'
           false
         elsif y=='compare_price' || y=='wholesale_price'
-          errors.add(:Not_a_Number, ": [[#{y}]] -  [#{val}]") unless val.is_a?(Numeric) && val!=0
+          errors.add(:This_needs_to_be_a_real_number, ": Found [[#{y}]] -  [#{val}]") if val.include?('a'||'b'||'c'||'d'||'e'||'f'||'g'||'h'||'i'||'j'||'k'||'l'||'m'||'n'||'o'||'p'||'q'||'r'||'s'||'t'||'u'||'v'||'w'||
+                                                                                                'x'||'y'||'z'||'-') || (val.include?('-') || val.include?('..'))
           false
         else
           true
         end
       end.all?
     end
+
 
 
     def must_have_M_and_value x

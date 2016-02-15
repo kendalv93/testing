@@ -26,12 +26,15 @@ class CosmoSigmaRow < ActiveRecord::Base
     #errors.add(:Must_have_values, "#{}") if have_values?(CosmoSigmaRow.headers)
     values?(CosmoSigmaRow.headers)
 
-    errors.add(:Invalid_number, " :Found [[#{:product_weight}]] - [#{product_weight}], [[#{:package_weight}]] - [#{package_weight}], [[#{:box_length}]] - [#{box_length}], [[#{:box_width}]] - [#{box_width}], [[#{:box_height}]] - [#{box_height}]") unless are_numbers? [:product_weight, :package_weight, :box_length, :box_width, :box_height]
+    errors.add(:These_have_to_be_a_number, " :Found [[#{:product_weight}]] - [#{product_weight}], [[#{:package_weight}]] - [#{package_weight}], [[#{:box_length}]] - [#{box_length}], [[#{:box_width}]] - [#{box_width}], [[#{:box_height}]] - [#{box_height}]") unless are_numbers? [:product_weight, :package_weight, :box_length, :box_width, :box_height]
 
-    errors.add(:contains_dollar_signs, "Found [[#{:wholesale_price}]] - [#{wholesale_price}]") unless !have_dollar? [wholesale_price]
-    #errors.add(:contains_dollar_signs, "Found #{:compare_price}- #{compare_price}") unless !have_dollar? [compare_price]
-    dollar_or_zero = [hla_cost, hla_retail, msrp, map,]
-    errors.add(:dollar_or_zero_error, "contains dollar or zero") unless !have_dollar?(dollar_or_zero ) && !have_0(dollar_or_zero)
+    errors.add(:These_fields_cannot_contain_a_dollar_sign, " :Found [[#{:wholesale_price}]] - [#{wholesale_price}]") unless !have_dollar? [wholesale_price]
+    errors.add(:This_cannot_contain_a_dollar_sign_or_be_a_zero, " :Found [[hla_cost]] - [#{hla_cost}]") unless !contains_dollar?(hla_cost ) && !contains_0?(hla_cost)
+    errors.add(:This_cannot_contain_a_dollar_sign_or_be_a_zero, " :Found [[hla_retail]] - [#{hla_retail}]") unless !contains_dollar?(hla_retail ) && !contains_0?(hla_retail)
+    errors.add(:This_cannot_contain_a_dollar_sign_or_be_a_zero, " :Found [[msrp]] - [#{msrp}]") unless !contains_dollar?(msrp ) && !contains_0?(msrp)
+    errors.add(:This_cannot_contain_a_dollar_sign_or_be_a_zero, " :Found [[map]] - [#{map}]") unless !contains_dollar?(map ) && !contains_0?(map)
+
+    errors.count != 0
   end
 
 end

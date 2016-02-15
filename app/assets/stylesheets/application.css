@@ -23,14 +23,56 @@
 
 }
 
-#errors_explained {
+#errors_explained{
     background: #b9d1da;
-    border: 10px;
+    border: 0px;
     font-size: large;
+    width: 34.5%;
+    position: fixed;
+    right: 0;
+    float: right;
+
 }
 
-#import_page {
-    background: #999999;
-    margin: 50px;
 
+#import_page {
+    width: 100%;
+    font-size: 30px; font-weight: bold;
+    border: 10px;
+    margin: 10px;
+    text-align: center;
+    line-height: 100%
+
+}
+
+#errors_text {
+    font-size: 15px;
+    font-style: italic;
+}
+
+#list_of_errors {
+
+}
+
+#moving_table {
+    position: fixed;
+    background-color:white;
+
+
+}
+
+#following_message {
+    width: 66%;
+    background-color: #999999;
+}
+
+#body_background {
+    width: auto;
+    height: auto;
+    background-color: #b4b4b3;
+}
+
+#notice {
+    font-size: 15px;
+    font-weight: bold;
 }
