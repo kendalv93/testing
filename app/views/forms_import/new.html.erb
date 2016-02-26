@@ -27,7 +27,7 @@
 <div id="following_message">
   <div id="notice"><%= flash[:notice] %></div>
   <% @forms_import.errors.full_messages.each do |msg| %>
-     <div id="errors"><%= msg.gsub(/(?<foo>[!$;'"\\])/, "<mark>\\k<foo></mark>" ).html_safe %>
+     <div id="errors"><%= msg.gsub(/(?<foo>[!$;'″"\\])/, "<mark>\\k<foo></mark>" ).html_safe %>
 </div><% end %>
  <div>
 
