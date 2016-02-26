@@ -4,12 +4,21 @@
     <div id="errors_text"><li>Error messages will look like the following:   "In Row X:  (Error message) : [[HEADERS]] - [Data]"</li>
       <br>
       <li>Illegal Characters are:</li>
-      <ul><li>!<br></li>   <li>$<br></li>   <li>;<br></li>   <li>\<br></li>   <li>'<br></li>   <li>"<br></li></ul>
-      <ul>(The easiest fix for illegal characters: ctrl+f and search for the illegal characters, replace or delete the illegal characters as appropriate)</ul>
+      <ul><li>!<br></li>
+        <li>$<br></li>
+        <li>;<br></li>
+        <li>\<br></li>
+        <li>'<br></li>
+        <li>"<br></li></ul>
+      <ul>(All Illegal characters will be highlighted. The easiest fix for illegal characters: ctrl+f and search for the illegal characters, replace or delete the illegal characters as appropriate)</ul>
       <li>Headers will be displayed inside double brackets [[HEADERS]]</li>
       <li>Data inside cells will be displayed inside brackets [DATA]</li>
       <li>[] - means that the cell is empty</li>
       <li>In Row X : indicates which row in the CSV file the error was found</li>
+
+
+
+
       <br> <%= button_to "Refresh", root_url, :method => :get %>
     </div>
 
@@ -17,10 +26,11 @@
 
 <div id="following_message">
   <div id="notice"><%= flash[:notice] %></div>
-  <li><% @forms_import.errors.full_messages.each do |msg| %>
-     <div id="errors"><%= msg %></div></li>
- <% end %>
+  <% @forms_import.errors.full_messages.each do |msg| %>
+     <div id="errors"><%= msg.gsub(/(?<foo>[!$;'"\\])/, "<mark>\\k<foo></mark>" ).html_safe %>
+</div><% end %>
  <div>
+
 
 <%= form_tag '/forms_import', multipart: true do %>
     <%= file_field_tag :file, accept: '.csv', required: 'required' %>

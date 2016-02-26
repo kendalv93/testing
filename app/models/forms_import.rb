@@ -47,6 +47,7 @@ class FormsImport
     end
   end
 
+
   def new
     redirect_to root_url, notice: "Products imported."
   end
