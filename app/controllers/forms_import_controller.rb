@@ -1,8 +1,6 @@
 class FormsImportController< ApplicationController
   rescue_from ActiveRecord::UnknownAttributeError, with: :nothing_picked
 
-
-
   def new
   @forms_import = FormsImport.new(params[:file], params[:row])
   end

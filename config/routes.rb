@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
+  root to: "forms_import#new"
   resources :forms_import
   resources :forms do
 
     collection { post :import }
   end
 
-  root to: "forms_import#new"
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -13,7 +14,6 @@ Rails.application.routes.draw do
   # root 'welcome#index'
 
   post 'forms_import/new' => 'form_import#create'
-
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
