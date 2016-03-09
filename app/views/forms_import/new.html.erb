@@ -19,7 +19,7 @@
 
 
 
-      <br> <%= button_to "Refresh", root_url, :method => :get %>
+      <br> <%= button_to "Refresh", forms_imports_path, :method => :get %>
     </div>
 
   </ul></div>
@@ -32,7 +32,7 @@
  <div>
 
 
-<%= form_tag forms_imports_path, multipart: true do %>
+<%= form_tag forms_imports_path , multipart: true do %>
     <%= file_field_tag :file, accept: '.csv', required: 'required' %>
        Web:
        <%= radio_button_tag :row, :cosmo_web, required: 'required' %>
