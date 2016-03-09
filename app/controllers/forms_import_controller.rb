@@ -6,7 +6,7 @@ class FormsImportController< ApplicationController
   end
 
   def index
-    redirect_to root_url
+    render 'forms_import/new'
   end
 
   def show
