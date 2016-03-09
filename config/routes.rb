@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root to: 'forms_import#new'
-
+  post 'forms_import/new' => 'forms_import#create'
   resources :forms_import
   resources :forms do
 
@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
-  post 'forms_import/new' => 'forms_import#create'
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
