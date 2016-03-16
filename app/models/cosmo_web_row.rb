@@ -172,36 +172,36 @@ class CosmoWebRow < ActiveRecord::Base
 
     main_ids = [cat_main_id_1] #, cat_main_id_2, cat_main_id_3]
     unless valid_main_id_name_combo?(cat_main_id_1, cat_main_name_1)
-      errors.add(:The, " Main ID number does not match it's corresponding name: Found [[cat_main_id_1]] - [#{cat_main_id_1}] with the [[cat_main_name_1]] - [#{cat_main_name_1}]")
+      errors.add(:The, " Main ID number does not match the corresponding name: Found [[cat_main_id_1]] - [#{cat_main_id_1}] with the [[cat_main_name_1]] - [#{cat_main_name_1}]")
     end
 
     if (cat_main_id_2  != ''  && !cat_main_id_2.nil?) || (cat_main_name_2  != ''  && !cat_main_name_2.nil?)
       unless valid_main_id_name_combo?(cat_main_id_2, cat_main_name_2)
-        errors.add(:The, "Second Main ID number does not match it's corresponding name: Found [[cat_main_id_2]] - [#{cat_main_id_2}] with the [[cat_main_name_2]] - [#{cat_main_name_2}]")
+        errors.add(:The, "Second Main ID number does not match the corresponding name: Found [[cat_main_id_2]] - [#{cat_main_id_2}] with the [[cat_main_name_2]] - [#{cat_main_name_2}]")
       end
     end
 
     if cat_main_id_3  != ''  && !cat_main_id_3.nil?
       unless valid_main_id_name_combo?(cat_main_id_3, cat_main_name_3)
-        errors.add(:The, "Third Main ID number does not match it's corresponding name: Found [[cat_main_id_3]] - [#{cat_main_id_3}] with the [[cat_main_name_3]] - [#{cat_main_name_3}]")
+        errors.add(:The, "Third Main ID number does not match the corresponding name: Found [[cat_main_id_3]] - [#{cat_main_id_3}] with the [[cat_main_name_3]] - [#{cat_main_name_3}]")
       end
     end
 
     sub_ids = [cat_sub_id_1]
     unless valid_id_name_combo?(cat_sub_id_1, cat_sub_name_1)
-      errors.add(:The, " Sub category ID does not match it's corresponding name :I found [[cat_sub_id_1]] - [#{cat_sub_id_1}] with the [[cat_sub_name_1]] [#{cat_sub_name_1}]")
+      errors.add(:The, " Sub category ID does not match the corresponding name :I found [[cat_sub_id_1]] - [#{cat_sub_id_1}] with the [[cat_sub_name_1]] [#{cat_sub_name_1}]")
     end
 
     sub_cat_2_3 = [cat_sub_id_2, cat_sub_id_3]
     if (cat_sub_id_2 != ''  && !cat_sub_id_2.nil?) || (cat_sub_name_2 != ''  && !cat_sub_name_2.nil?)
       unless valid_id_name_combo?(cat_sub_id_2, cat_sub_name_2)
-        errors.add(:The, "Second Sub category ID does not match it's corresponding name :I found [[cat_sub_id_2]] - [#{cat_sub_id_2}] with the [[cat_sub_name_2]] [#{cat_sub_name_2}]")
+        errors.add(:The, "Second Sub category ID does not match the corresponding name :I found [[cat_sub_id_2]] - [#{cat_sub_id_2}] with the [[cat_sub_name_2]] [#{cat_sub_name_2}]")
       end
     end
 
     if (cat_sub_id_3 != ''  && !cat_sub_id_3.nil?) || (cat_sub_name_3 != ''  && !cat_sub_name_3.nil?)
       unless valid_id_name_combo?(cat_sub_id_3, cat_sub_name_3)
-        errors.add(:The, "Third Sub category ID does not match it's corresponding name :I found [[cat_sub_id_3]] - [#{cat_sub_id_3}] with the [[cat_sub_name_3]] [#{cat_sub_name_3}]")
+        errors.add(:The, "Third Sub category ID does not match the corresponding name :I found [[cat_sub_id_3]] - [#{cat_sub_id_3}] with the [[cat_sub_name_3]] [#{cat_sub_name_3}]")
       end
     end
     errors.count != 0

@@ -6,7 +6,7 @@ class FormsImportController< ApplicationController
   end
 
   def index
-    render 'forms_import/new'
+    render :new
   end
 
   def show
@@ -22,13 +22,11 @@ class FormsImportController< ApplicationController
     else
       #puts "MY ERRORS: #{@forms_import.errors.map{|x| "1st: x.to_s"}}"
       respond_to do |format|
-        format.html { render :new }
+        format.html { render :new}
         format.json { render json: @forms_import.errors, status: :unprocessable_entity }
-
       end
     end
   end
-
 
   private
   def nothing_picked

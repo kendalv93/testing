@@ -28,8 +28,6 @@ class FormsImport
   def initialize(file,  row)
     @file = file
     @row = row
-
-
   end
 
   def save
